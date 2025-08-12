@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Анкета компании</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f0f3f2;
+            padding: 40px;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #4a4a4a;
+        }
+
+        .form-group {
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .form-group:nth-child(odd) {
+
+            background-color: #a1d28d; /* тёмно-зелёный */
+        }
+
+        .form-group:nth-child(even) {
+            background-color: #e6f3e6; /* светло-зелёный */
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        button {
+            background-color: #7ed321;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #6bb71d;
+        }
+
+.toast {
+    visibility: hidden;
+    min-width: 400px;
+    background-color: #7ed321;
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+    padding: 25px 35px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    z-index: 2000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    opacity: 0;
+    transition: opacity 0.5s, visibility 0.5s;
+}
+
+.toast.show {
+    visibility: visible;
+    opacity: 0.5;
+}
+
+
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Анкета компании</h1>
+        <form action="/submit" method="post">
+            {% for field in fields %}
+            <div class="form-group">
+                <label for="{{ field.name }}">{{ field.label }}</label>
+                {% if field.type == "textarea" %}
+                    <textarea name="{{ field.name }}" rows="4" required>{{ form_values.get(field.name, '') }}</textarea>
+                {% else %}
+<input type="text" name="{{ field.name }}" value="{{ form_values.get(field.name, '') }}" required>
+
+                {% endif %}
+            </div>
+            {% endfor %}
+            <div class="submit-btn">
+                <button type="submit">Отправить</button>
+            </div>
+        </form>
+    </div>
+    {% if success %}
+<div id="successToast" class="toast">Анкета успешно отправлена!</div>
+<script>
+    const toast = document.getElementById("successToast");
+    toast.classList.add("show");
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 3000);
+</script>
+{% endif %}
+
+</body>
+</html>
+
+
+
